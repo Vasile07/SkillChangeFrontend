@@ -31,6 +31,8 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name={"LoginScreen"} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name={"RegisterScreen"} options={{headerShown: false}}></Stack.Screen>
       </Stack>
     </ThemeProvider>
   );
