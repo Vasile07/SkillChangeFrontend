@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
         height: "20%"
     },
     titleText: {
+        width: "100%",
+        textAlign: "center",
         fontSize: 40,
         fontWeight: "bold",
         color: "#FFF",

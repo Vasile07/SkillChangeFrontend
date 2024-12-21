@@ -35,6 +35,7 @@ export default function RootLayout() {
         <Stack.Screen name={"RegisterScreen"} options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name={"ForgotPasswordEmailCompletionScreen"} options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name={"ForgotPasswordCodeCompletionScreen"} options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name={"ForgotPasswordNewPasswordScreen"} options={{headerShown: false}}></Stack.Screen>
       </Stack>
     </ThemeProvider>
   );
