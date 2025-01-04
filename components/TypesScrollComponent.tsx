@@ -6,6 +6,7 @@ const TypesScrollComponent: React.FC<{ type: TypeProperties, setType: any }> = (
     const [types, setTypes] = useState<TypeProperties[]>([]);
 
     useEffect(() => {
+        //TODO: Fetch data from server
         setTypes([
             {id: 0, type: "All types"},
             {id: 1, type: "Type 1"},

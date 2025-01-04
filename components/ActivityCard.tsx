@@ -1,9 +1,9 @@
-import {DimensionValue, Image, ImageSourcePropType, StyleSheet, Text, View} from "react-native";
+import {DimensionValue, Image, StyleSheet, Text, View} from "react-native";
 
 interface ActivityCardProps {
     width: DimensionValue,
     height: DimensionValue,
-    image: ImageSourcePropType,
+    image: string,
     title: string,
 }
 
@@ -11,7 +11,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({width, height, image, title}
     return (
         <View style={styles.secondShadow}>
             <View style={[styles.card, {width, height}]}>
-                <Image source={image} style={styles.imageStyle}/>
+                <Image source={{uri: image}} style={styles.imageStyle}/>
                 <Text style={styles.titleStyle}>{title}</Text>
             </View>
         </View>
@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
     },
     secondShadow: {
-        width: "auto",
-        height: "auto",
         borderRadius: 15,
         shadowColor: "rgba(255, 255, 255, 1)",
         shadowOffset: {width: 15, height: -15},

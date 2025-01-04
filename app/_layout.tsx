@@ -27,11 +27,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack initialRouteName={"LoginScreen"}>
         <Stack.Screen name="+not-found" />
         <Stack.Screen name={"LoginScreen"} options={{headerShown: false}}></Stack.Screen>
+          <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
         <Stack.Screen name={"RegisterScreen"} options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name={"ForgotPasswordEmailCompletionScreen"} options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen name={"ForgotPasswordCodeCompletionScreen"} options={{headerShown: false}}></Stack.Screen>
