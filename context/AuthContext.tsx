@@ -1,6 +1,7 @@
 import React, {createContext, PropsWithChildren, useContext, useEffect, useState,} from 'react';
 import {useStorageState} from "@/hooks/useStorageState";
 import axios from "axios";
+import {router} from "expo-router";
 
 interface AuthContextType {
     loginFunction: (email: string, password: string) => void,
@@ -24,7 +25,9 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
     const loginFunction = (email: string, password: string) => {
         axios.post("http://localhost:8080/users/login", {email, password})
             .then((response) => {
+                console.log(response.data)
                 setJwt(response.data.jwt)
+                router.push("/(tabs)/HomePage")
             })
             .catch((error) => {
                 console.log(error)

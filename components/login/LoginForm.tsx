@@ -19,7 +19,7 @@ const LoginForm: React.FC = () =>{
         <View style={styles.formContainer}>
             <View style={styles.inputView}>
                 <LoginInput label={"Email"} value={email} setValue={setEmail}/>
-                <LoginInput label={"Email"} value={password} setValue={setPassword}/>
+                <LoginInput label={"Password"} value={password} setValue={setPassword}/>
             </View>
             <View style={styles.passwordRecoveryContainer}>
                 <Pressable style={{width: "auto", height: "auto"}}>
