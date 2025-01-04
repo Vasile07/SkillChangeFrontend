@@ -3,10 +3,18 @@ import LoginInput from "@/components/login/LoginInput";
 import {useState} from "react";
 import LoginButton from "@/components/login/LoginButton";
 import OrComponent from "@/components/OrComponent";
+import {useAuthentication} from "@/context/AuthContext";
 
 const LoginForm: React.FC = () =>{
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const {loginFunction} = useAuthentication()
+
+    const login = () => {
+        loginFunction(email, password);
+    }
+
     return (
         <View style={styles.formContainer}>
             <View style={styles.inputView}>
@@ -20,7 +28,7 @@ const LoginForm: React.FC = () =>{
             </View>
             <View style={styles.footerContainer}>
                 <View style={styles.buttonContainer}>
-                    <LoginButton onButtonClick={() => {}}/>
+                    <LoginButton onButtonClick={login}/>
                 </View>
                 <OrComponent  fontSize={27}/>
                 <Pressable style={{width: "auto", height: "auto"}}>
