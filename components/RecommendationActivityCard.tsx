@@ -3,14 +3,24 @@ import {Image, ImageSourcePropType, StyleSheet, Text, View} from "react-native";
 import {BlurView} from "expo-blur";
 
 
-const RecommendationActivityCard: React.FC<{ image: ImageSourcePropType, title: string }> = ({image, title}) => {
+const RecommendationActivityCard: React.FC<{ image: ImageSourcePropType, title: string, isFront: boolean }> = ({
+                                                                                                                   image,
+                                                                                                                   title,
+                                                                                                                   isFront
+                                                                                                               }) => {
     return (
         <View style={styles.card}>
-            <BlurView intensity={44} style={{width: "100%", height: "100%", position: "absolute"}}></BlurView>
-            <View style={styles.imageContainer}>
-                <Image source={image} style={styles.imageStyle}/>
-            </View>
-            <Text style={styles.textStyle}>{title}</Text>
+            <BlurView intensity={44} style={styles.blurView}/>
+            {
+                isFront &&
+                <View style={styles.cardContent}>
+
+                    <View style={styles.imageContainer}>
+                        <Image source={image} style={styles.imageStyle}/>
+                    </View>
+                    <Text style={styles.textStyle}>{title}</Text>
+                </View>
+            }
         </View>
 
     )
@@ -27,11 +37,12 @@ const styles = StyleSheet.create({
         borderRadius: 26,
         overflow: "hidden",
         position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        gap: 20,
+    },
+    blurView: {
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        borderRadius: 26,
     },
     imageContainer: {
         width: "85%",
@@ -55,6 +66,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textDecorationLine: "underline",
         color: "#FFF"
+    },
+    cardContent: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 20,
+        backfaceVisibility: "hidden",
     }
 })
 
