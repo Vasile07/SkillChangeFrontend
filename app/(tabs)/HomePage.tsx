@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
 import TypeProperties from "@/datas/TypeProperties";
 import {useAuthentication} from "@/context/AuthContext";
 import LoadingScreen from "@/components/LoadingScreen";
-import {useRouter} from "expo-router";
+import {useFocusEffect, useRouter} from "expo-router";
 import RecommendationCarrousel from "@/components/RecommendationCarrousel";
 import UserMeetDetails from "@/datas/UserMeetDetails";
 import ProfilePicture from "@/components/ProfilePicture";
+import axiosInstance from "@/axiosInstance";
+import Skill from "@/datas/Skill";
 
 const HomePage: React.FC = () => {
     const [type, setType] = useState<TypeProperties>({id: 0, type: "All types"})
@@ -16,8 +18,23 @@ const HomePage: React.FC = () => {
     const [loggedInUser, setLoggedInUser] = useState<null | UserMeetDetails>(null)
 
     useEffect(() => {
-        setLoggedInUser({firstname: "Vasile", lastname: "Irimies", profilePicture: ""})
-    }, []);
+        if (isAuthenticated)
+            axiosInstance.get("http://localhost:8080/users").then((response) => {
+                setLoggedInUser(response.data)
+            })
+
+    }, [isAuthenticated]);
+
+    const [recommendedSkills, setRecommendedSkills] = useState<Skill[]>([]);
+    useFocusEffect(useCallback(() => {
+        if (isAuthenticated)
+            axiosInstance.get("http://localhost:8080/skills/recommendedSkills").then((response) => {
+                setRecommendedSkills(response.data)
+                console.log(response.data)
+            })
+
+    }, [isAuthenticated]))
+
 
     const data = [
         {image: {uri: "https://via.placeholder.com/100"}, title: "Activity 1"},
@@ -58,7 +75,7 @@ const HomePage: React.FC = () => {
                         <Text style={{fontSize: 16, fontWeight: "600", color: "#26344F"}}>Welcome to SkillChange</Text>
                     </View>
                     <View style={styles.profilePictureSection}>
-                        <ProfilePicture image={loggedInUser.profilePicture}/>
+                        <ProfilePicture image={loggedInUser.profilePicture} diameter={45}/>
                     </View>
                 </View>
                 <View style={styles.meets}>
@@ -80,7 +97,7 @@ const HomePage: React.FC = () => {
                     </View>
                 </View>
                 <View style={styles.recommendationSection}>
-                    <RecommendationCarrousel items={data}/>
+                    {recommendedSkills.length == 3 && <RecommendationCarrousel items={recommendedSkills}/>}
                 </View>
             </ScreenContainer>
 

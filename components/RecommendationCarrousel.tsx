@@ -13,7 +13,7 @@ const RecommendationCarrousel: React.FC<{ items: any[] }> = ({items}) => {
 
     const handleGesture = (event: any) => {
         console.log(event)
-        if (event.nativeEvent.translationX > event.nativeEvent.translationY) {
+        if (Math.abs(event.nativeEvent.translationX) > Math.abs(event.nativeEvent.translationY)) {
             const direction = event.nativeEvent.translationX > 0 ? 1 : -1;
             rotation.value = withSpring(rotation.value + step * direction);
 
@@ -49,7 +49,7 @@ const RecommendationCarrousel: React.FC<{ items: any[] }> = ({items}) => {
                         return (
                             <Animated.View key={index}
                                            style={[styles.carouselItem, animatedStyle, {zIndex: zIndexes[index]}]}>
-                                <RecommendationActivityCard image={item.image} title={item.title}
+                                <RecommendationActivityCard image={item.picture} title={item.name}
                                                             isFront={zIndexes[index] === 100}/>
                             </Animated.View>
                         );

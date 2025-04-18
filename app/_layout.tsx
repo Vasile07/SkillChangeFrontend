@@ -45,6 +45,7 @@ export default function RootLayout() {
                     <Stack.Screen name="ForgotPasswordEmailCompletionScreen" options={{headerShown: false}}/>
                     <Stack.Screen name="ForgotPasswordCodeCompletionScreen" options={{headerShown: false}}/>
                     <Stack.Screen name="ForgotPasswordNewPasswordScreen" options={{headerShown: false}}/>
+                    <Stack.Screen name="SkillPage" options={{headerShown: false}}/>
 
                     {/* Fallback */}
                     <Stack.Screen name="+not-found"/>

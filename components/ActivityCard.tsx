@@ -1,19 +1,25 @@
-import {DimensionValue, Image, StyleSheet, Text, View} from "react-native";
+import {DimensionValue, Image, Pressable, StyleSheet, Text, View} from "react-native";
+import React from "react";
+import {useRouter} from "expo-router";
 
 interface ActivityCardProps {
+
     width: DimensionValue,
     height: DimensionValue,
+    id: number,
     image: string,
     title: string,
 }
 
-const ActivityCard: React.FC<ActivityCardProps> = ({width, height, image, title}) => {
+const ActivityCard: React.FC<ActivityCardProps> = ({width, height, id, image, title}) => {
+    const router = useRouter();
     return (
-        <View style={styles.secondShadow}>
-            <View style={[styles.card, {width, height}]}>
+        <View style={styles.secondShadow} key={id}>
+            {/*@ts-ignore*/}
+            <Pressable style={[styles.card, {width, height}]} onPress={() => router.push(`/SkillPage?id=${id}`)}>
                 <Image source={{uri: image}} style={styles.imageStyle}/>
                 <Text style={styles.titleStyle}>{title}</Text>
-            </View>
+            </Pressable>
         </View>
 
     )
@@ -38,14 +44,16 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
     },
     imageStyle: {
-        width: "60%",
-        minWidth: 70,
-        aspectRatio: 1,
-        objectFit: "fill"
+        width: "50%",
+        minWidth: 60,
+        height: "50%",
+        minHeight: 60,
+        objectFit: "contain",
+        aspectRatio: "auto"
     },
     titleStyle: {
         fontWeight: "bold",
-        fontSize: 14,
+        fontSize: 11,
     },
 })
 

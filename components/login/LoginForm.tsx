@@ -4,6 +4,7 @@ import {useState} from "react";
 import LoginButton from "@/components/login/LoginButton";
 import OrComponent from "@/components/OrComponent";
 import {useAuthentication} from "@/context/AuthContext";
+import {router} from "expo-router";
 
 const LoginForm: React.FC = () =>{
     const [email, setEmail] = useState<string>("");
@@ -31,7 +32,7 @@ const LoginForm: React.FC = () =>{
                     <LoginButton onButtonClick={login}/>
                 </View>
                 <OrComponent  fontSize={27}/>
-                <Pressable style={{width: "auto", height: "auto"}}>
+                <Pressable style={{width: "auto", height: "auto"}} onPress={() => router.push("/RegisterScreen")}>
                     <Text style={styles.registerHereLink}>Register here</Text>
                 </Pressable>
             </View>
