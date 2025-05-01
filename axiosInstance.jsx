@@ -1,24 +1,39 @@
 import axios from "axios";
-
-const getToken = () => {
-    return localStorage.getItem("jwt");
-};
+import {config} from "@/config";
+import {Platform} from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: config.API_URL,
 });
 
 axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = getToken();
+    async (config) => {
+        let token = "";
+
+        if (Platform.OS === "web") {
+            try {
+                if (typeof localStorage !== "undefined") {
+                    token = localStorage.getItem("jwt") || "";
+                }
+            } catch (e) {
+                console.error("Local storage is unavailable:", e);
+            }
+        } else {
+            try {
+                token = (await SecureStore.getItemAsync("jwt")) || "";
+            } catch (e) {
+                console.error("SecureStore error:", e);
+            }
+        }
+
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
+
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    },
+    (error) => Promise.reject(error)
 );
 
 export default axiosInstance;

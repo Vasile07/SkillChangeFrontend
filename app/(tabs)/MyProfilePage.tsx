@@ -22,7 +22,7 @@ const MyProfilePage: React.FC = () => {
                 setLoggedInUser(response.data)
             })
         else if (isAuthenticated)
-            axiosInstance.get(`${config.API_URL}/users`).then((response) => {
+            axiosInstance.get(`/users`).then((response) => {
                 setLoggedInUser(response.data)
             })
 
@@ -32,11 +32,11 @@ const MyProfilePage: React.FC = () => {
 
     useEffect(() => {
         if (userId)
-            axiosInstance.get(`${config.API_URL}/skills/${userId}`).then((response) => {
+            axiosInstance.get(`/skills/${userId}`).then((response) => {
                 setLoggedInUser(response.data)
             })
         else if (isAuthenticated)
-            axiosInstance.get(`${config.API_URL}/skills`)
+            axiosInstance.get(`/skills`)
                 .then((response: any) => {
                     setSkills(response.data)
                 })

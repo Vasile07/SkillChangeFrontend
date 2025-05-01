@@ -2,6 +2,7 @@ import React, {createContext, PropsWithChildren, useContext, useEffect, useState
 import {useStorageState} from "@/hooks/useStorageState";
 import axios from "axios";
 import {router} from "expo-router";
+import {config} from "@/config";
 
 interface AuthContextType {
     loginFunction: (email: string, password: string) => void,
@@ -23,7 +24,7 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
     const [[isLoading, jwt], setJwt] = useStorageState("jwt")
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const loginFunction = (email: string, password: string) => {
-        axios.post(`/users/login`, {email, password})
+        axios.post(`${config.API_URL}/users/login`, {email, password})
             .then((response) => {
                 console.log(response.data)
                 setJwt(response.data.jwt)

@@ -29,7 +29,7 @@ const SchedulingPage: React.FC = () => {
                 console.log(error);
             })
 
-        axiosInstance.get(`${config.API_URL}/users/myFriends`)
+        axiosInstance.get(`/users/myFriends`)
             .then((response: any) => {
                 setFriends(response.data)
             })
