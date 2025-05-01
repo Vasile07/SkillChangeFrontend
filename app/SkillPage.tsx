@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import {SkillDetails} from "@/datas/SkillDetails";
 import axiosInstance from "@/axiosInstance";
@@ -12,7 +12,7 @@ const SkillPage: React.FC = () => {
     const [skill, setSkill] = useState<SkillDetails | null>(null)
 
     useEffect(() => {
-        axiosInstance.get(`http://localhost:8080/skills/details/${id}`)
+        axiosInstance.get(`/skills/details/${id}`)
             .then((response) => {
                 setSkill(response.data)
             })
@@ -23,6 +23,7 @@ const SkillPage: React.FC = () => {
 
     return (
         <View style={styles.pageContainer}>
+            <View style={styles.transparentBack}/>
             <Pressable style={styles.exitButton} onPress={() => router.back()}>
                 <Text style={styles.exitButtonText}>x</Text>
             </Pressable>
@@ -39,13 +40,13 @@ const SkillPage: React.FC = () => {
                         </View>
                         <View style={styles.usersContainer}>
                             <Text style={styles.descriptionText}>Skilled Users</Text>
-                            <View>
+                            <ScrollView>
                                 {
                                     skill.users.map((userSkill) => (
                                         <SkillLevelRow key={userSkill.userId} userSkill={userSkill}/>
                                     ))
                                 }
-                            </View>
+                            </ScrollView>
                         </View>
                     </View>
                 }
@@ -62,7 +63,12 @@ const styles = StyleSheet.create({
         height: "100%",
         display: "flex",
         position: "relative",
-        backgroundColor: "red"
+        backgroundColor: "#FFF"
+    },
+    transparentBack: {
+        height: "100%",
+        width: "100%",
+        backgroundColor: "rgba(38, 52, 79,0.75)"
     },
     mainContainer: {
         width: "100%",
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         width: "100%",
         marginLeft: 15,
+        height: "40%",
     },
     descriptionText: {
         color: "#000",
@@ -112,7 +119,6 @@ const styles = StyleSheet.create({
     usersContainer: {
         display: "flex",
         flex: 1,
-
         marginLeft: 15,
     },
 })

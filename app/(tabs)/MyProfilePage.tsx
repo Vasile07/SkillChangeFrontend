@@ -8,15 +8,21 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SkillsList from "@/components/SkillsList";
 import Skill from "@/datas/Skill";
 import UserDetails from "@/datas/UserDetails";
+import {useLocalSearchParams} from "expo-router";
 
 const MyProfilePage: React.FC = () => {
     const {isLoading, isAuthenticated} = useAuthentication();
     const [loggedInUser, setLoggedInUser] = useState<null | UserDetails>(null)
     const [option, setOption] = useState<string>("Description")
+    const {userId} = useLocalSearchParams<{ userId: string }>();
 
     useEffect(() => {
-        if (isAuthenticated)
-            axiosInstance.get("http://localhost:8080/users").then((response) => {
+        if (userId)
+            axiosInstance.get(`/users/${userId}`).then((response) => {
+                setLoggedInUser(response.data)
+            })
+        else if (isAuthenticated)
+            axiosInstance.get(`${config.API_URL}/users`).then((response) => {
                 setLoggedInUser(response.data)
             })
 
@@ -25,13 +31,18 @@ const MyProfilePage: React.FC = () => {
     const [skills, setSkills] = useState<Skill[]>([])
 
     useEffect(() => {
-        axiosInstance.get('http://localhost:8080/skills/mySkills')
-            .then((response: any) => {
-                setSkills(response.data)
+        if (userId)
+            axiosInstance.get(`${config.API_URL}/skills/${userId}`).then((response) => {
+                setLoggedInUser(response.data)
             })
-            .catch((error: any) => {
-                console.log(error);
-            })
+        else if (isAuthenticated)
+            axiosInstance.get(`${config.API_URL}/skills`)
+                .then((response: any) => {
+                    setSkills(response.data)
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                })
     }, [loggedInUser]);
 
     return (

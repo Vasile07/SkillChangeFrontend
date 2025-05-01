@@ -14,7 +14,7 @@ const RegisterForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
 
     const register = () => {
-        axios.post("http://localhost:8080/users/register", {firstname, lastname, country, email, password})
+        axios.post(`/users/register`, {firstname, lastname, country, email, password})
             .then((response) => {
                 router.push("/LoginScreen")
             })

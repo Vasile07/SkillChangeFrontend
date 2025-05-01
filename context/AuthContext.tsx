@@ -23,7 +23,7 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
     const [[isLoading, jwt], setJwt] = useStorageState("jwt")
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const loginFunction = (email: string, password: string) => {
-        axios.post("http://localhost:8080/users/login", {email, password})
+        axios.post(`/users/login`, {email, password})
             .then((response) => {
                 console.log(response.data)
                 setJwt(response.data.jwt)

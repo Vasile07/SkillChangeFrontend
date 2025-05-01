@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
 
     useEffect(() => {
         if (isAuthenticated)
-            axiosInstance.get("http://localhost:8080/users").then((response) => {
+            axiosInstance.get(`/users`).then((response) => {
                 setLoggedInUser(response.data)
             })
 
@@ -28,20 +28,12 @@ const HomePage: React.FC = () => {
     const [recommendedSkills, setRecommendedSkills] = useState<Skill[]>([]);
     useFocusEffect(useCallback(() => {
         if (isAuthenticated)
-            axiosInstance.get("http://localhost:8080/skills/recommendedSkills").then((response) => {
+            axiosInstance.get(`/skills/recommendedSkills`).then((response) => {
                 setRecommendedSkills(response.data)
                 console.log(response.data)
             })
 
     }, [isAuthenticated]))
-
-
-    const data = [
-        {image: {uri: "https://via.placeholder.com/100"}, title: "Activity 1"},
-        {image: {uri: "https://via.placeholder.com/100"}, title: "Activity 2"},
-        {image: {uri: "https://via.placeholder.com/100"}, title: "Activity 3"},
-    ];
-
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -60,11 +52,6 @@ const HomePage: React.FC = () => {
             <LoadingScreen/>
             :
             <ScreenContainer style={styles.pageContainer}>
-                {/*<Text>HOME PAGE</Text>*/}
-                {/*<ActivityCard width={130} height={130} image={require("@/assets/images/gardening.png")} title={"Gardening"}/>*/}
-                {/*<View style={{width: 220, height: 290}}>*/}
-                {/*    <RecommendationActivityCard image={require("@/assets/images/gardening.png")} title={"Gardening"}/>*/}
-                {/*</View>*/}
                 <View style={styles.headerView}>
                     <View style={styles.welcomeTitle}>
                         <Text style={{

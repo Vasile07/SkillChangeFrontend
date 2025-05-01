@@ -9,7 +9,7 @@ interface CodeInputProperties {
 
 const CodeInput: React.FC<CodeInputProperties> = ({code, setCode}) => {
 
-    const inputRefs = code.map((letter) => useRef(null));
+    const inputRefs = code.map((letter) => useRef<any>(null));
     const [currentIndex, setCurrentIndex] = useState<number>(0)
 
     const onChangeLetter = (letterIndex: number, letter: string) => {
@@ -19,9 +19,11 @@ const CodeInput: React.FC<CodeInputProperties> = ({code, setCode}) => {
     }
 
     useEffect(() => {
-        if (currentIndex < inputRefs.length)
-            if (inputRefs[currentIndex].current)
-                inputRefs[currentIndex].current.focus()
+        if (currentIndex < inputRefs.length) {
+            const inputRef = inputRefs[currentIndex].current;
+            if (inputRef)
+                inputRef.focus()
+        }
     }, [currentIndex])
 
     return (
