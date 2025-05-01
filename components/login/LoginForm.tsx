@@ -19,8 +19,8 @@ const LoginForm: React.FC = () =>{
     return (
         <View style={styles.formContainer}>
             <View style={styles.inputView}>
-                <LoginInput label={"Email"} value={email} setValue={setEmail}/>
-                <LoginInput label={"Password"} value={password} setValue={setPassword}/>
+                <LoginInput testID={"email-field"} label={"Email"} value={email} setValue={setEmail}/>
+                <LoginInput testID={"password-field"} label={"Password"} value={password} setValue={setPassword}/>
             </View>
             <View style={styles.passwordRecoveryContainer}>
                 <Pressable style={{width: "auto", height: "auto"}}>
@@ -29,7 +29,7 @@ const LoginForm: React.FC = () =>{
             </View>
             <View style={styles.footerContainer}>
                 <View style={styles.buttonContainer}>
-                    <LoginButton onButtonClick={login}/>
+                    <LoginButton testID={"login-button"} onButtonClick={login}/>
                 </View>
                 <OrComponent  fontSize={27}/>
                 <Pressable style={{width: "auto", height: "auto"}} onPress={() => router.push("/RegisterScreen")}>

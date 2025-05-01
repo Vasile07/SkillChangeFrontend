@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {StyleSheet} from "react-native";
 import {TextInput} from 'react-native-paper';
 
@@ -6,12 +6,14 @@ interface LoginInputProperties {
     label: string,
     value: string,
     setValue: (newValue: string) => void,
+    testID: string,
 }
 
-const LoginInput: React.FC<LoginInputProperties> = ({label, value, setValue}) => {
+const LoginInput: React.FC<LoginInputProperties> = ({label, value, setValue, testID}) => {
 
     return (
         <TextInput
+            testID={testID}
             label={label}
             value={value}
             mode={"flat"}

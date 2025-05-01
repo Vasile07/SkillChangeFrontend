@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, Image} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import React from "react";
 import LoginForm from "@/components/login/LoginForm";
 import {LinearGradient} from "expo-linear-gradient";
@@ -11,7 +11,8 @@ const LoginScreen: React.FC = () => {
             locations={[0, 0.43, 0.78, 1]}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
-            style={styles.pageContainer}>
+            style={styles.pageContainer}
+            testID={"login-page"}>
             <View style={styles.titleContainer}>
                 <Text style={styles.welcomeText}>Welcome to</Text>
                 <Image source={require("../assets/images/LogoSkillChange.png")}/>

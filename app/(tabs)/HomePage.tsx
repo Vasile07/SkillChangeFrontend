@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
         (isLoading || loggedInUser === null) ?
             <LoadingScreen/>
             :
-            <ScreenContainer style={styles.pageContainer}>
+            <ScreenContainer style={styles.pageContainer} testID={"home-page"}>
                 <View style={styles.headerView}>
                     <View style={styles.welcomeTitle}>
                         <Text style={{

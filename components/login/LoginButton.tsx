@@ -1,12 +1,13 @@
 import {Pressable, StyleSheet, Text} from "react-native";
 
-interface LoginButtonProperties{
-    onButtonClick: () => void
+interface LoginButtonProperties {
+    onButtonClick: () => void,
+    testID?: string
 }
 
-const LoginButton: React.FC<LoginButtonProperties> = ({onButtonClick}) => {
+const LoginButton: React.FC<LoginButtonProperties> = ({onButtonClick, testID}) => {
     return (
-        <Pressable style={styles.buttonStyle} onPress={() => onButtonClick()}>
+        <Pressable testID={testID} style={styles.buttonStyle} onPress={() => onButtonClick()}>
             <Text style={styles.textStyle}>Login</Text>
         </Pressable>
     )
