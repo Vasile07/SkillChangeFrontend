@@ -49,7 +49,7 @@ const RecommendationCarrousel: React.FC<{ items: any[] }> = ({items}) => {
                         return (
                             <Animated.View key={index}
                                            style={[styles.carouselItem, animatedStyle, {zIndex: zIndexes[index]}]}>
-                                <RecommendationActivityCard image={item.picture} title={item.name}
+                                <RecommendationActivityCard id={item.skillId} image={item.picture} title={item.name}
                                                             isFront={zIndexes[index] === 100}/>
                             </Animated.View>
                         );

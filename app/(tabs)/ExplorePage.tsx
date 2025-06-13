@@ -9,9 +9,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import CustomSearchBar from "@/components/CustomSearchBar";
 
 const ExplorePage: React.FC = () => {
-    // const [skills, setSkills] = useState<Skill[]>([])
     const [skills, setSkills] = useStorageSystem<Skill[]>("allSkills", []);
-
     const [value, setValue] = useState<string>("")
 
     useEffect(() => {
@@ -32,7 +30,7 @@ const ExplorePage: React.FC = () => {
             <View style={styles.skillList}>
                 {
                     skills != null ?
-                        <SkillsList skills={skills}/>
+                        <SkillsList skills={skills} filterText={value}/>
                         :
                         <LoadingScreen/>
                 }

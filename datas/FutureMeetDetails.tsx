@@ -1,6 +1,6 @@
 import UserMeetDetails from "@/datas/UserMeetDetails";
 
-export default interface MeetDetails {
+export default interface FutureMeetDetails {
     activityName: string,
     activityPicture: string,
     startHour: string,

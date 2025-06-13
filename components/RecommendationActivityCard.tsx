@@ -1,15 +1,22 @@
 import React from "react";
-import {Image, ImageSourcePropType, StyleSheet, Text, View} from "react-native";
+import {Image, ImageSourcePropType, Pressable, StyleSheet, Text, View} from "react-native";
 import {BlurView} from "expo-blur";
+import {router} from "expo-router";
 
 
-const RecommendationActivityCard: React.FC<{ image: ImageSourcePropType, title: string, isFront: boolean }> = ({
-                                                                                                                   image,
-                                                                                                                   title,
-                                                                                                                   isFront
-                                                                                                               }) => {
+const RecommendationActivityCard: React.FC<{
+    image: ImageSourcePropType,
+    title: string,
+    isFront: boolean,
+    id: number,
+}> = ({
+          image,
+          title,
+          isFront,
+          id
+      }) => {
     return (
-        <View style={styles.card}>
+        <Pressable style={styles.card} onPress={() => router.push(`/SkillPage?id=${id}`)}>
             <BlurView intensity={44} style={styles.blurView}/>
             {
                 isFront &&
@@ -21,7 +28,7 @@ const RecommendationActivityCard: React.FC<{ image: ImageSourcePropType, title: 
                     <Text style={styles.textStyle}>{title}</Text>
                 </View>
             }
-        </View>
+        </Pressable>
 
     )
 }
@@ -65,7 +72,9 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         textDecorationLine: "underline",
-        color: "#FFF"
+        color: "#FFF",
+        width: "100%",
+        textAlign: "center"
     },
     cardContent: {
         width: "100%",

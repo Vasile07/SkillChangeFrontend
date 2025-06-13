@@ -3,7 +3,7 @@ import React from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
 import ActivityCard from "@/components/ActivityCard";
 
-const SkillsList: React.FC<{ skills: Skill[] }> = ({skills}) => {
+const SkillsList: React.FC<{ skills: Skill[], filterText?: string }> = ({skills, filterText}) => {
 
     const chunkArray = (arr: Skill[], chunkSize: number = 3) => {
         let result = [];
@@ -16,8 +16,8 @@ const SkillsList: React.FC<{ skills: Skill[] }> = ({skills}) => {
     return (
         <ScrollView style={styles.listContainer}>
             {
-                chunkArray(skills).map(skillRow => (
-                    <View style={styles.rowContainer}>
+                chunkArray(skills.filter(skill => filterText == null || skill.name.toLowerCase().includes(filterText.toLowerCase()))).map((skillRow, index) => (
+                    <View style={styles.rowContainer} key={index}>
                         {
                             skillRow.map(skill => (
                                 <ActivityCard key={skill.skillId} width={100} height={100} image={skill.picture}

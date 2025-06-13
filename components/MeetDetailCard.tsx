@@ -1,8 +1,9 @@
-import {StyleSheet, Text, View} from "react-native";
-import MeetDetails from "@/datas/MeetDetails";
+import {Image, StyleSheet, Text, View} from "react-native";
+import FutureMeetDetails from "@/datas/FutureMeetDetails";
 import React from "react";
+import ProfilePicture from "@/components/ProfilePicture";
 
-const MeetDetailCard: React.FC<{ meet: MeetDetails }> = ({meet}) => {
+const MeetDetailCard: React.FC<{ meet: FutureMeetDetails }> = ({meet}) => {
     const userToDisplay = 3;
 
     return (
@@ -20,12 +21,25 @@ const MeetDetailCard: React.FC<{ meet: MeetDetails }> = ({meet}) => {
             </View>
             <View style={styles.userList}>
                 {
-                    meet.users.map((user, index) => (
-                        <View key={index}>
-                            <Text>{user.firstname} {user.lastname}</Text>
+                    meet.users.slice(0, userToDisplay).map((user, index) => (
+                        <View key={index} style={styles.userRow}>
+                            <ProfilePicture image={user.profilePicture} diameter={23}/>
+                            <Text style={styles.userNameStyle}>{user.firstname} {user.lastname}</Text>
                         </View>
                     ))
                 }
+                {
+                    meet.users.length > userToDisplay &&
+                    <View style={styles.userRow}>
+                        <Text style={styles.userNameStyle}>And {meet.users.length - userToDisplay} more</Text>
+                    </View>
+
+                }
+            </View>
+            <View style={styles.activity}>
+                <View style={styles.activityCard}>
+                    <Image source={{uri: meet.activityPicture}} style={{width: "60%", height: "60%"}}/>
+                </View>
             </View>
         </View>
     )
@@ -34,28 +48,30 @@ const MeetDetailCard: React.FC<{ meet: MeetDetails }> = ({meet}) => {
 const styles = StyleSheet.create({
     cardContainer: {
         width: "100%",
-        height: 90,
+        height: 130,
         backgroundColor: "rgba(38,52,79,0.66)",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-end",
-        gap: 15,
     },
     bar: {
         width: 8,
         height: "100%",
     },
     activityContainer: {
-        width: "45%",
+        marginLeft: 10,
+        maxWidth: "35%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         gap: 5,
     },
     activityDetails: {
+        marginRight: 10,
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         width: "100%",
         flex: 1,
         paddingVertical: 2,
@@ -71,19 +87,48 @@ const styles = StyleSheet.create({
     },
     activityTitle: {
         width: "100%",
-        height: "30%",
+        height: "20%",
     },
     otherDetail: {
         fontSize: 12,
         color: "#FFF",
     },
     userList: {
+        marginLeft: 10,
         display: "flex",
-        width: "30%",
-        height: "70%",
+        maxWidth: "30%",
+        height: "80%",
         flexDirection: "column",
-        backgroundColor: "red",
-
+        gap: 5,
+    },
+    userRow: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+    },
+    userNameStyle: {
+        marginLeft: 8,
+        fontSize: 10,
+        color: "#FFF",
+        fontWeight: "bold"
+    },
+    activity: {
+        height: "100%",
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    activityCard: {
+        maxWidth: 80,
+        width: "80%",
+        aspectRatio: 1,
+        borderRadius: 16,
+        backgroundColor: "#FFF",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     }
 })
 

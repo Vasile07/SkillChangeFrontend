@@ -5,7 +5,7 @@ const CustomSearchBar: React.FC<{ value: string, setValue: (newVal: string) => v
     return (
         <View style={style.searchbar}>
             {/*<View style={style.inputBackground}>*/}
-            <TextInput placeholder={"Search..."} style={style.input}/>
+            <TextInput placeholder={"Search..."} style={style.input} onChangeText={(newText) => setValue(newText)}/>
             {/*</View>*/}
 
         </View>

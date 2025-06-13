@@ -15,6 +15,8 @@ const MyProfilePage: React.FC = () => {
     const [loggedInUser, setLoggedInUser] = useState<null | UserDetails>(null)
     const [option, setOption] = useState<string>("Description")
     const {userId} = useLocalSearchParams<{ userId: string }>();
+    const [followers, setFollowers] = useState<Skill[]>([]);
+    const [numberOfTotalMeets, setNumberOfTotalMeets] = useState<number>(0)
 
     useEffect(() => {
         if (userId)
@@ -31,11 +33,17 @@ const MyProfilePage: React.FC = () => {
     const [skills, setSkills] = useState<Skill[]>([])
 
     useEffect(() => {
-        if (userId)
+        if (userId) {
             axiosInstance.get(`/skills/${userId}`).then((response) => {
-                setLoggedInUser(response.data)
+                setSkills(response.data)
             })
-        else if (isAuthenticated)
+            axiosInstance.get(`/users/followers/${userId}`).then((response) => {
+                setFollowers(response.data)
+            })
+            axiosInstance.get(`/meets/totalMeets/${userId}`).then((response) => {
+                setNumberOfTotalMeets(response.data)
+            })
+        } else if (isAuthenticated) {
             axiosInstance.get(`/skills`)
                 .then((response: any) => {
                     setSkills(response.data)
@@ -43,6 +51,21 @@ const MyProfilePage: React.FC = () => {
                 .catch((error: any) => {
                     console.log(error);
                 })
+            axiosInstance.get(`/users/followers`)
+                .then((response: any) => {
+                    setFollowers(response.data)
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                })
+            axiosInstance.get(`/meets/totalMeets`)
+                .then((response: any) => {
+                    setNumberOfTotalMeets(response.data)
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                })
+        }
     }, [loggedInUser]);
 
     return (
@@ -58,19 +81,28 @@ const MyProfilePage: React.FC = () => {
                 <View style={styles.profileStatisticsContainer}>
                     <View style={styles.statisticDataContainer}>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.statisticDataText, {fontSize: 15, fontWeight: "bold"}]}>??</Text>
+                            <Text style={[styles.statisticDataText, {
+                                fontSize: 15,
+                                fontWeight: "bold"
+                            }]}>{numberOfTotalMeets}</Text>
                             <Text style={styles.statisticDataText}>meetings</Text>
                         </View>
                     </View>
                     <View style={styles.statisticDataContainer}>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.statisticDataText, {fontSize: 15, fontWeight: "bold"}]}>??</Text>
+                            <Text style={[styles.statisticDataText, {
+                                fontSize: 15,
+                                fontWeight: "bold"
+                            }]}>{skills.length}</Text>
                             <Text style={styles.statisticDataText}>skills</Text>
                         </View>
                     </View>
                     <View style={styles.statisticDataContainer}>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.statisticDataText, {fontSize: 15, fontWeight: "bold"}]}>??</Text>
+                            <Text style={[styles.statisticDataText, {
+                                fontSize: 15,
+                                fontWeight: "bold"
+                            }]}>{followers.length}</Text>
                             <Text style={styles.statisticDataText}>followers</Text>
                         </View>
                     </View>

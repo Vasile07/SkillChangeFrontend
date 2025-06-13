@@ -1,26 +1,50 @@
-import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
 import SchedulePageBackground from "@/components/SchedulePageBackground";
 import ScheduleAddButton from "@/components/ScheduleAddButton";
 import MeetDetailCard from "@/components/MeetDetailCard";
+import ActivityTimeline from "@/components/ActivityTimeline";
+import axiosInstance from "@/axiosInstance";
+import FutureMeetDetails from "@/datas/FutureMeetDetails";
 
 const SchedulePage: React.FC = () => {
 
-    const meet = {
-        activityName: "Gardening",
-        activityPicture: "@/assets/images/gardening",
-        startHour: "10:00",
-        endHour: "12:00",
-        date: "22.12.2024",
-        address: "Strada Lalelelor nr. 15",
-        users: [{
-            firstname: "Ion",
-            lastname: "Pop",
-            profilePicture: "@/assets/images/gardening",
-        }],
-        color: "#92140C",
-    }
+    const [futureMeets, setFutureMeets] = useState<FutureMeetDetails[]>([]);
+    useEffect(() => {
+        axiosInstance.get('/meets/futureMeets').then((response) => {
+            setFutureMeets(response.data)
+        })
+    }, []);
+
+    // const meet = {
+    //     activityName: "Gardening",
+    //     activityPicture: "../assets/images/gardening.png",
+    //     startHour: "10:00",
+    //     endHour: "12:00",
+    //     date: "22.12.2024",
+    //     address: "Strada Lalelelor nr. 15",
+    //     users: [{
+    //         firstname: "Ion",
+    //         lastname: "Pop",
+    //         profilePicture: null,
+    //     },
+    //         {
+    //             firstname: "Ion",
+    //             lastname: "Pop",
+    //             profilePicture: null,
+    //         },{
+    //             firstname: "Ion",
+    //             lastname: "Pop",
+    //             profilePicture: null,
+    //         },
+    //         {
+    //             firstname: "Ion",
+    //             lastname: "Pop",
+    //             profilePicture: null,
+    //         }],
+    //     color: "#92140C",
+    // }
 
     return (
         <ScreenContainer style={styles.pageContainer}>
@@ -31,11 +55,19 @@ const SchedulePage: React.FC = () => {
                 <ScheduleAddButton/>
             </View>
 
+            <View style={styles.todayMeets}>
+                <ActivityTimeline/>
+            </View>
+
             <View style={styles.incomingSection}>
                 <Text style={styles.incomingText}>Incoming</Text>
-                <View style={styles.listContainer}>
-                    <MeetDetailCard meet={meet}/>
-                </View>
+                <ScrollView style={styles.listContainer}>
+                    {
+                        futureMeets.map((meet, index) => (
+                            <View key={index}><MeetDetailCard meet={meet}/></View>
+                        ))
+                    }
+                </ScrollView>
             </View>
         </ScreenContainer>
     )
@@ -75,18 +107,29 @@ const styles = StyleSheet.create({
     incomingSection: {
         position: "absolute",
         top: "45%",
-        left: "10%",
+        left: "5%",
         display: "flex",
         height: "55%",
-        width: "80%",
+        width: "90%",
         flexDirection: "column",
         gap: 30,
     },
     listContainer: {
         display: "flex",
-        width: "85%",
+        width: "100%",
         flex: 1,
         marginHorizontal: "auto",
+        gap: 20,
+    },
+    todayMeets: {
+        position: "absolute",
+        top: "3%",
+        left: "10%",
+        display: "flex",
+        height: "28%",
+        width: "80%",
+        flexDirection: "column",
+        gap: 30,
     }
 
 })

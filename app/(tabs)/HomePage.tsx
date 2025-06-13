@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
-import TypeProperties from "@/datas/TypeProperties";
 import {useAuthentication} from "@/context/AuthContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import {useFocusEffect, useRouter} from "expo-router";
@@ -12,8 +11,8 @@ import axiosInstance from "@/axiosInstance";
 import Skill from "@/datas/Skill";
 
 const HomePage: React.FC = () => {
-    const [type, setType] = useState<TypeProperties>({id: 0, type: "All types"})
     const {isLoading, isAuthenticated} = useAuthentication();
+    const [numberOfMeetsToday, setNumberOfMeetsToday] = useState<number>(0);
     const router = useRouter()
     const [loggedInUser, setLoggedInUser] = useState<null | UserMeetDetails>(null)
 
@@ -27,11 +26,15 @@ const HomePage: React.FC = () => {
 
     const [recommendedSkills, setRecommendedSkills] = useState<Skill[]>([]);
     useFocusEffect(useCallback(() => {
-        if (isAuthenticated)
+        if (isAuthenticated) {
             axiosInstance.get(`/skills/recommendedSkills`).then((response) => {
                 setRecommendedSkills(response.data)
                 console.log(response.data)
             })
+            axiosInstance.get(`/meets/todayMeets/count`).then((response) => {
+                setNumberOfMeetsToday(response.data);
+            })
+        }
 
     }, [isAuthenticated]))
 
@@ -68,10 +71,10 @@ const HomePage: React.FC = () => {
                 <View style={styles.meets}>
                     <View style={styles.textMeet}>
                         <Text>You have scheduled</Text>
-                        <Text>X meetings this week</Text>
+                        <Text>{numberOfMeetsToday} meetings today</Text>
                     </View>
                     <View style={styles.linkContainer}>
-                        <View style={styles.link}>
+                        <Pressable style={styles.link} onPress={() => router.push('/(tabs)/SchedulePage')}>
                             <Text style={{
                                 fontSize: 16,
                                 fontWeight: "500",
@@ -79,7 +82,7 @@ const HomePage: React.FC = () => {
                                 textDecorationLine: "underline"
                             }}>Go see them</Text>
                             <View style={[styles.triangle, {transform: [{rotate: "90deg"}]}]}/>
-                        </View>
+                        </Pressable>
 
                     </View>
                 </View>
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5F6F7"
+        backgroundColor: "#F1F4F9"
     },
     headerView: {
         height: "20%",
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
     },
     triangle: {
         position: "absolute",
-        left: -3,
+        left: -5,
         width: 0,
         height: 0,
         borderLeftWidth: 18,
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 30,
         borderLeftColor: "transparent",
         borderRightColor: "transparent",
-        borderBottomColor: "#F5F6F7",
+        borderBottomColor: "#F1F4F9",
     }
 
 })
