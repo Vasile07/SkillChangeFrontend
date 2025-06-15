@@ -86,7 +86,7 @@ const SchedulingPage: React.FC = () => {
     }
 
     return (
-        <View style={styles.pageContainer}>
+        <View style={styles.pageContainer} testID={"scheduling-page"}>
             <View style={styles.backgroundContainer}>
                 <SchedulePageBackground/>
             </View>
@@ -103,6 +103,7 @@ const SchedulingPage: React.FC = () => {
                 </View>
                 <View style={styles.dropdownContainer}>
                     <SelectList boxStyles={styles.boxStyle} dropdownStyles={styles.boxStyle}
+
                                 setSelected={(val: number) => setSelectedSkillId(val)} data={skills.map(skill => {
                         return {key: skill.skillId, value: skill.name}
                     })}/>

@@ -3,7 +3,8 @@ import {router} from "expo-router";
 
 const ScheduleAddButton: React.FC = () => {
     return (
-        <Pressable style={styles.addButton} onPress={() => router.push("/(tabs)/SchedulingPage")}>
+        <Pressable testID={"add-meet-button"} style={styles.addButton}
+                   onPress={() => router.push("/(tabs)/SchedulingPage")}>
             <Image source={require("@/assets/images/addPlusScheduleActivity.png")} style={styles.addImage}/>
         </Pressable>
     )

@@ -14,7 +14,7 @@ const SkillsList: React.FC<{ skills: Skill[], filterText?: string }> = ({skills,
     }
 
     return (
-        <ScrollView style={styles.listContainer}>
+        <ScrollView style={styles.listContainer} testID={"skill-list"}>
             {
                 chunkArray(skills.filter(skill => filterText == null || skill.name.toLowerCase().includes(filterText.toLowerCase()))).map((skillRow, index) => (
                     <View style={styles.rowContainer} key={index}>

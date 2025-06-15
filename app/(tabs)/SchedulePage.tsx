@@ -47,7 +47,7 @@ const SchedulePage: React.FC = () => {
     // }
 
     return (
-        <ScreenContainer style={styles.pageContainer}>
+        <ScreenContainer style={styles.pageContainer} testID={"schedule-page"}>
             <View style={styles.backgroundContainer}>
                 <SchedulePageBackground/>
             </View>
