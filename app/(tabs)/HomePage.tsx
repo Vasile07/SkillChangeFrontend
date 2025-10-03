@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
 import {useAuthentication} from "@/context/AuthContext";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -9,18 +9,52 @@ import UserMeetDetails from "@/datas/UserMeetDetails";
 import ProfilePicture from "@/components/ProfilePicture";
 import axiosInstance from "@/axiosInstance";
 import Skill from "@/datas/Skill";
+import * as SecureStore from "expo-secure-store";
+import {useWebSocket} from "@/hooks/useWebSocket";
+import {showToast} from "@/showToast";
 
 const HomePage: React.FC = () => {
     const {isLoading, isAuthenticated} = useAuthentication();
     const [numberOfMeetsToday, setNumberOfMeetsToday] = useState<number>(0);
     const router = useRouter()
     const [loggedInUser, setLoggedInUser] = useState<null | UserMeetDetails>(null)
+    const {meetNotification: {connect, disconnect}} = useWebSocket();
 
     useEffect(() => {
-        if (isAuthenticated)
+        if (isAuthenticated) {
             axiosInstance.get(`/users`).then((response) => {
                 setLoggedInUser(response.data)
             })
+
+            const setupWebSocket = async () => {
+                let token = "";
+
+                if (Platform.OS === "web") {
+                    try {
+                        token = localStorage.getItem("jwt") || "";
+                    } catch (e) {
+                        console.error("Local storage is unavailable:", e);
+                    }
+                } else {
+                    try {
+                        token = (await SecureStore.getItemAsync("jwt")) || "";
+                    } catch (e) {
+                        console.error("SecureStore error:", e);
+                    }
+                }
+
+                connect(token, (data) => {
+                    console.log(data)
+                    showToast(data)
+                });
+            };
+
+            setupWebSocket();
+
+            return () => {
+                disconnect();
+            };
+        }
 
     }, [isAuthenticated]);
 

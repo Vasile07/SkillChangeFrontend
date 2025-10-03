@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
 import SchedulePageBackground from "@/components/SchedulePageBackground";
@@ -7,15 +7,16 @@ import MeetDetailCard from "@/components/MeetDetailCard";
 import ActivityTimeline from "@/components/ActivityTimeline";
 import axiosInstance from "@/axiosInstance";
 import FutureMeetDetails from "@/datas/FutureMeetDetails";
+import {useFocusEffect} from "expo-router";
 
 const SchedulePage: React.FC = () => {
 
     const [futureMeets, setFutureMeets] = useState<FutureMeetDetails[]>([]);
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         axiosInstance.get('/meets/futureMeets').then((response) => {
             setFutureMeets(response.data)
         })
-    }, []);
+    }, []));
 
     // const meet = {
     //     activityName: "Gardening",

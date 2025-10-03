@@ -9,7 +9,7 @@ import * as SecureStore from "expo-secure-store";
 
 const DirectChatPage: React.FC = () => {
     const {name, userId} = useLocalSearchParams<{ name: string, userId: number }>();
-    const {connect, disconnect} = useWebSocket();
+    const {messages: {connect, disconnect}} = useWebSocket();
     const router = useRouter();
     const [text, setText] = useState<string>("");
     const [messages, setMessages] = useState<MessageView[]>([]);

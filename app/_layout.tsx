@@ -2,11 +2,13 @@ import {DarkTheme, DefaultTheme, ThemeProvider} from "@react-navigation/native";
 import {useFonts} from "expo-font";
 import {Stack} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import "react-native-reanimated";
 
 import {useColorScheme} from "@/hooks/useColorScheme";
 import {AuthProvider} from "@/context/AuthContext";
+import {CustomToast} from "@/components/CustomToast";
+import Toast from "react-native-toast-message";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,6 +17,10 @@ export default function RootLayout() {
     const [loaded] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
+
+    const toastConfig = {
+        customMeeting: (props: any) => <CustomToast {...props} />,
+    };
 
     useEffect(() => {
         if (loaded) {
@@ -51,6 +57,7 @@ export default function RootLayout() {
                     {/* Fallback */}
                     <Stack.Screen name="+not-found"/>
                 </Stack>
+                <Toast config={toastConfig}/>
             </ThemeProvider>
         </AuthProvider>
     );

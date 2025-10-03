@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {ScreenContainer} from "react-native-screens";
 import ProfilePicture from "@/components/ProfilePicture";
 import {useAuthentication} from "@/context/AuthContext";
@@ -9,6 +9,8 @@ import SkillsList from "@/components/SkillsList";
 import Skill from "@/datas/Skill";
 import UserDetails from "@/datas/UserDetails";
 import {useLocalSearchParams} from "expo-router";
+import MeetingNotification from "@/datas/MeetingNotification";
+import {MeetingRequestsPopup} from "@/components/MeetingRequestsPopup";
 
 const MyProfilePage: React.FC = () => {
     const {isLoading, isAuthenticated} = useAuthentication();
@@ -17,6 +19,35 @@ const MyProfilePage: React.FC = () => {
     const {userId} = useLocalSearchParams<{ userId: string }>();
     const [followers, setFollowers] = useState<Skill[]>([]);
     const [numberOfTotalMeets, setNumberOfTotalMeets] = useState<number>(0)
+
+    const [pendingRequests, setPendingRequests] = useState<MeetingNotification[]>([
+        {
+            meetingId: 1,
+            organizer: 'Alice',
+            title: 'Project Sync',
+            date: '2025-06-24',
+            time: '10:00 AM',
+        },
+        {
+            meetingId: 2,
+            organizer: 'Bob',
+            title: 'Design Review',
+            date: '2025-06-25',
+            time: '2:00 PM',
+        },
+    ]);
+
+    const handleAccept = (id: number) => {
+        console.log('Accepted', id);
+        setPendingRequests((prev) => prev.filter((req) => req.meetingId !== id));
+    };
+
+    const handleDecline = (id: number) => {
+        console.log('Declined', id);
+        setPendingRequests((prev) => prev.filter((req) => req.meetingId !== id));
+    };
+
+    const [popupVisible, setPopupVisible] = useState(false);
 
     useEffect(() => {
         if (userId)
@@ -78,6 +109,9 @@ const MyProfilePage: React.FC = () => {
                     <ProfilePicture image={loggedInUser.profilePicture} diameter={151}></ProfilePicture>
                     <Text style={styles.firstAndLastNameText}>{loggedInUser.firstname} {loggedInUser.lastname}</Text>
                 </View>
+                <Pressable style={styles.notificationButton} onPress={() => setPopupVisible(true)}>
+                    <Image source={{uri: "../../assets/images/bell.png"}} style={{width: "80%", height: "80%"}}/>
+                </Pressable>
                 <View style={styles.profileStatisticsContainer}>
                     <View style={styles.statisticDataContainer}>
                         <View style={styles.textContainer}>
@@ -135,6 +169,13 @@ const MyProfilePage: React.FC = () => {
 
                     </View>
                 </View>
+                <MeetingRequestsPopup
+                    visible={popupVisible}
+                    meetingRequests={pendingRequests}
+                    onAccept={handleAccept}
+                    onDecline={handleDecline}
+                    onClose={() => setPopupVisible(false)}
+                />
             </ScreenContainer>
     )
 }
@@ -146,7 +187,15 @@ const styles = StyleSheet.create({
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F1F4F9"
+        backgroundColor: "#F1F4F9",
+        position: "relative",
+    },
+    notificationButton: {
+        position: "absolute",
+        left: 10,
+        top: 10,
+        width: 40,
+        height: 40,
     },
     headerContainer: {
         paddingVertical: 15,
